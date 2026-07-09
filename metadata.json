@@ -1,0 +1,6 @@
+{
+  "name": "Sahur AI",
+  "description": "AI-Powered Indian Constitutional Rights & Legal Compliance Analyzer with explainable visual reports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

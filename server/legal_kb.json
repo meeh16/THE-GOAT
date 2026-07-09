@@ -1,0 +1,138 @@
+[
+  {
+    "id": "const-art21",
+    "domain": "policing",
+    "statute": "Constitution of India",
+    "section": "Article 21",
+    "title": "Protection of Life and Personal Liberty",
+    "text": "No person shall be deprived of his life or personal liberty except according to procedure established by law. This guarantees the right to live with dignity and protects against unlawful police actions, torture, or arbitrary confinement."
+  },
+  {
+    "id": "const-art22",
+    "domain": "policing",
+    "statute": "Constitution of India",
+    "section": "Article 22",
+    "title": "Protection Against Arrest and Detention",
+    "text": "Any arrested person must be informed of the grounds of arrest as soon as possible. They have the right to consult and be defended by a legal practitioner of choice. Every arrested person must be produced before the nearest magistrate within 24 hours of arrest, excluding travel time."
+  },
+  {
+    "id": "dk-basu-guidelines",
+    "domain": "policing",
+    "statute": "Supreme Court Guidelines (D.K. Basu v. State of West Bengal)",
+    "section": "Arrest Protocol",
+    "title": "Mandatory Guidelines for Police Officers Conducting Arrests",
+    "text": "1. Arresting officers must wear clear, visible identification with names and designations.\n2. A memo of arrest must be prepared at the time of arrest, witnessed by at least one family member or respected citizen.\n3. The person arrested has the right to have a friend or relative informed of their arrest within 8-12 hours.\n4. The arrested person must be examined for injuries at the time of arrest and re-examined every 48 hours during detention.\n5. Copy of all documents including arrest memo must be sent to the Area Magistrate."
+  },
+  {
+    "id": "bnss-sec35",
+    "domain": "policing",
+    "statute": "Bharatiya Nagarik Suraksha Sanhita (BNSS)",
+    "section": "Section 35 (formerly CrPC Section 41)",
+    "title": "When Police May Arrest Without Warrant",
+    "text": "Police can arrest without a warrant only in cognizable offenses. For offenses with punishment less than 7 years, a prior notice of appearance must be issued first under Section 35(3) unless reasonable grounds exist to believe the person will abscond or tamper with evidence, which must be recorded in writing by the police officer."
+  },
+  {
+    "id": "bnss-sec47",
+    "domain": "policing",
+    "statute": "Bharatiya Nagarik Suraksha Sanhita (BNSS)",
+    "section": "Section 47 (formerly CrPC Section 46)",
+    "title": "Arrest of Women",
+    "text": "No woman can be arrested after sunset and before sunrise, except under exceptional circumstances and with the prior written permission of a Judicial Magistrate of the first class. The arrest must be made by a female police officer."
+  },
+  {
+    "id": "mta-sec5",
+    "domain": "tenancy",
+    "statute": "Model Tenancy Act, 2021",
+    "section": "Section 5",
+    "title": "Requirement of Written Agreement",
+    "text": "No person shall let or take on rent any premises except by an agreement in writing, which shall be jointly informed to the Rent Authority by the landowner and tenant within a period of two months from the date of agreement."
+  },
+  {
+    "id": "mta-sec21",
+    "domain": "tenancy",
+    "statute": "Model Tenancy Act, 2021",
+    "section": "Section 21",
+    "title": "Eviction Notice and Grounds",
+    "text": "A tenant can only be evicted on legal grounds, such as: non-payment of rent for two consecutive months, subletting without written consent, damage to property, or misuse of premises. The landowner must provide a written notice of at least 15 days (or as specified in the lease) to rectify the breach before filing for eviction."
+  },
+  {
+    "id": "mta-sec11",
+    "domain": "tenancy",
+    "statute": "Model Tenancy Act, 2021",
+    "section": "Section 11",
+    "title": "Security Deposit Limits",
+    "text": "The security deposit to be paid by the tenant in advance shall: (a) not exceed two months' rent in case of residential premises; and (b) not exceed six months' rent in case of non-residential premises."
+  },
+  {
+    "id": "tpa-sec106",
+    "domain": "tenancy",
+    "statute": "Transfer of Property Act, 1882",
+    "section": "Section 106",
+    "title": "Notice to Terminate Lease",
+    "text": "In the absence of a written contract or local law, a lease of immovable property for residential or agricultural purposes is deemed to be a lease from month to month, terminable, on the part of either lessor or lessee, by fifteen days' notice expiring with the end of a month of the tenancy."
+  },
+  {
+    "id": "tpa-sec108",
+    "domain": "tenancy",
+    "statute": "Transfer of Property Act, 1882",
+    "section": "Section 108",
+    "title": "Rights and Liabilities of Lessor and Lessee",
+    "text": "The landlord (lessor) is bound to disclose any material defect in the property and must permit the tenant (lessee) to hold the property without interruption (quiet enjoyment) during the lease. The tenant is bound to maintain the property in good state and pay rent regularly."
+  },
+  {
+    "id": "copra-sec2-9",
+    "domain": "consumer",
+    "statute": "Consumer Protection Act, 2019",
+    "section": "Section 2(9)",
+    "title": "Consumer Rights Definition",
+    "text": "Consumers are guaranteed 6 fundamental rights:\n1. Right to be protected against marketing of goods/services hazardous to life/property.\n2. Right to be informed about quality, quantity, potency, purity, standard, and price of goods/services.\n3. Right to be assured access to a variety of goods/services at competitive prices.\n4. Right to be heard and assured that interests will receive due consideration.\n5. Right to seek redressal against unfair trade practices or unscrupulous exploitation.\n6. Right to consumer awareness."
+  },
+  {
+    "id": "copra-unfair-trade",
+    "domain": "consumer",
+    "statute": "Consumer Protection Act, 2019",
+    "section": "Section 2(47)",
+    "title": "Unfair Trade Practice",
+    "text": "Unfair trade practice means a trade practice which, for the purpose of promoting the sale, use or supply of any goods or services, adopts any unfair method or unfair or deceptive practice. This includes: making false statements about standards, quality, or grade; misrepresenting second-hand goods as new; offering misleading bargain prices; or refusing to issue a cash memo/receipt."
+  },
+  {
+    "id": "copra-defect-redress",
+    "domain": "consumer",
+    "statute": "Consumer Protection Act, 2019",
+    "section": "Redressal Mechanisms",
+    "title": "Grievance and Compensation Rules",
+    "text": "If goods purchased suffer from any defect, or services are deficient, a consumer can file a complaint to get: repair of defects, replacement of goods, refund of price paid, compensation for loss or injury, removal of deficiency in service, or discontinuation of unfair trade practices."
+  },
+  {
+    "id": "labour-ida-1947",
+    "domain": "workplace",
+    "statute": "Industrial Disputes Act, 1947",
+    "section": "Section 25-F",
+    "title": "Conditions Precedent to Retrenchment of Workmen",
+    "text": "No workman employed in any industry who has been in continuous service for not less than one year shall be retrenched until: (a) the workman has been given one month's notice in writing indicating the reasons for retrenchment, or paid wages in lieu of notice; and (b) retrenchment compensation equivalent to fifteen days' average pay for every completed year of service is paid."
+  },
+  {
+    "id": "labour-posh-2013",
+    "domain": "workplace",
+    "statute": "POSH Act, 2013",
+    "section": "Sexual Harassment of Women at Workplace",
+    "title": "Mandatory Prevention and Redressal Guidelines",
+    "text": "Every employer of a workplace with 10 or more employees must constitute an Internal Complaints Committee (ICC) to address grievances related to sexual harassment. Employers must provide a safe working environment, organize sensitization workshops, and display details of ICC members prominently."
+  },
+  {
+    "id": "labour-maternity-1961",
+    "domain": "workplace",
+    "statute": "Maternity Benefit Act, 1961",
+    "section": "Section 5 & 12",
+    "title": "Right to Maternity Benefit and Job Protection",
+    "text": "Every female employee who has worked for at least 80 days in the preceding 12 months is entitled to maternity benefit wages for a period of 26 weeks. It is unlawful for an employer to discharge or dismiss a woman during her pregnancy or maternity leave, or vary her service conditions to her disadvantage."
+  },
+  {
+    "id": "labour-wages-2019",
+    "domain": "workplace",
+    "statute": "Code on Wages, 2019",
+    "section": "Payment of Wages and Deductions",
+    "title": "Rules Governing Wage Deductions and Payments",
+    "text": "Wages must be paid regularly on a daily, weekly, fortnightly, or monthly basis, and not later than the 7th day of the succeeding month. Deductions are strictly regulated and cannot exceed 50% of the employee's total wages in a wage period. Unauthorized fines or withholding of salaries violate basic labor rights."
+  }
+]
