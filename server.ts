@@ -22,10 +22,19 @@ const ai = new GoogleGenAI({
 
 // Helper function to call generateContent with automatic retry and model fallback
 async function generateContentWithFallback(params: any, retries = 2, delayMs = 1000) {
+  let requestedModel = params.model || "gemini-2.5-flash";
+  
+  // If requesting gemini-3.5-flash, shift it to gemini-2.5-flash to avoid daily limits on experimental models
+  if (requestedModel === "gemini-3.5-flash") {
+    requestedModel = "gemini-2.5-flash";
+  }
+
   const modelsToTry = [
-    params.model || "gemini-3.5-flash",
-    "gemini-flash-latest",
-    "gemini-3.1-flash-lite",
+    requestedModel,
+    "gemini-2.5-flash",
+    "gemini-1.5-flash",
+    "gemini-2.5-pro",
+    "gemini-3.5-flash",
   ];
 
   // Deduplicate models to try
@@ -207,7 +216,7 @@ Analyze these clauses and map them against relevant Indian law:
 4. Set an overallVerdict: "good_to_go" (no illegal clauses), "review_needed" (unfair or suspicious clauses found), or "critical_issues" (unlawful clauses violating mandatory legal standards).`;
 
     const response = await generateContentWithFallback({
-      model: "gemini-3.5-flash",
+      model: "gemini-2.5-flash",
       contents: extractionPrompt,
       config: {
         systemInstruction: systemPrompt,
@@ -387,7 +396,7 @@ Evaluate this and respond in JSON with:
     - "stepByStepGrievance": Array of 3-4 specific sequential steps the citizen should take to submit a grievance.`;
 
     const response = await generateContentWithFallback({
-      model: "gemini-3.5-flash",
+      model: "gemini-2.5-flash",
       contents: analysisPrompt,
       config: {
         systemInstruction: systemPrompt,
@@ -527,7 +536,7 @@ Perform a comparative analysis of how these altered facts shift the compliance s
 4. How do the applicable constitutional rights or laws shift? Provide a summary of the difference.`;
 
     const response = await generateContentWithFallback({
-      model: "gemini-3.5-flash",
+      model: "gemini-2.5-flash",
       contents: simulationPrompt,
       config: {
         systemInstruction: systemPrompt,
@@ -602,7 +611,7 @@ Citizen's New Message: ${message}
 Please provide a helpful, legal-grounded reply. Let's make it friendly and highly readable, using bullet points for instructions!`;
 
     const response = await generateContentWithFallback({
-      model: "gemini-3.5-flash",
+      model: "gemini-2.5-flash",
       contents: promptWithHistory,
       config: {
         systemInstruction: chatContext,
