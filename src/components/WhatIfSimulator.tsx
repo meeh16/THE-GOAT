@@ -49,9 +49,15 @@ export default function WhatIfSimulator({
     if (!factsText || factsText.trim().length < 5) return;
     setIsLoading(true);
     try {
+      const customKey = localStorage.getItem("gemini_api_key");
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (customKey && customKey.trim() !== "") {
+        headers["x-gemini-api-key"] = customKey.trim();
+      }
+
       const response = await fetch("/api/simulate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({
           scenario: originalScenario,
           alteredFacts: factsText,
@@ -86,7 +92,7 @@ export default function WhatIfSimulator({
     <div className="bg-white border border-slate-200 rounded-[2rem] p-8 shadow-sm space-y-6" id="simulator_container">
       <div>
         <h4 className="font-display text-sm font-bold text-slate-800 flex items-center gap-1.5">
-          <Terminal className="w-4.5 h-4.5 text-indigo-600" /> "What If?" Legal Simulator Cockpit
+          <Terminal className="w-4.5 h-4.5 text-slate-800" /> "What If?" Legal Simulator Cockpit
         </h4>
         <p className="text-[11px] text-gray-400 mt-0.5">
           Tweak factual parameters (e.g. notice period length, presence of memos, written terms) and re-simulate outcomes instantly.
@@ -106,7 +112,7 @@ export default function WhatIfSimulator({
                 value={alteredFacts}
                 onChange={(e) => setAlteredFacts(e.target.value)}
                 placeholder="Describe altered details (e.g., 'What if the landlord had given me a 1-month written notice prior to eviction?')"
-                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:ring-2 focus:ring-indigo-500 font-sans"
+                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-xs focus:outline-hidden focus:ring-2 focus:ring-slate-500 font-sans"
               />
             </div>
 
@@ -138,7 +144,7 @@ export default function WhatIfSimulator({
                   <button
                     key={idx}
                     onClick={() => handlePresetClick(suggest)}
-                    className="w-full text-left p-2.5 bg-gray-50 border border-gray-100 rounded-lg hover:border-indigo-400 hover:bg-indigo-50/10 text-[11px] text-gray-600 font-medium transition-all"
+                    className="w-full text-left p-2.5 bg-gray-50 border border-gray-100 rounded-lg hover:border-slate-400 hover:bg-slate-100/50 text-[11px] text-gray-600 font-medium transition-all"
                   >
                     "{suggest}"
                   </button>
@@ -151,12 +157,12 @@ export default function WhatIfSimulator({
         {/* Simulator Results */}
         <div className="lg:col-span-2">
           {result ? (
-            <div className="border border-indigo-100 bg-indigo-50/5 rounded-2xl p-5 space-y-5" id="simulator_result_panel">
-              <div className="flex justify-between items-center border-b border-indigo-100 pb-3">
-                <span className="text-xs font-bold text-indigo-800 uppercase tracking-wider">
+            <div className="border border-slate-200 bg-slate-50/30 rounded-2xl p-5 space-y-5" id="simulator_result_panel">
+              <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+                <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
                   Simulation Outcome Analysis
                 </span>
-                <span className="text-[10px] font-mono bg-white border border-indigo-100 text-indigo-600 px-2 py-0.5 rounded font-bold">
+                <span className="text-[10px] font-mono bg-white border border-slate-200 text-slate-800 px-2 py-0.5 rounded font-bold">
                   Active Sandbox Mode
                 </span>
               </div>
@@ -181,11 +187,11 @@ export default function WhatIfSimulator({
                   <span className="text-[10px] text-gray-400">Compliance Score</span>
                 </div>
 
-                <div className="p-4 bg-white border border-indigo-100 rounded-xl space-y-1 relative">
+                <div className="p-4 bg-white border border-slate-200 rounded-xl space-y-1 relative">
                   <div className="absolute top-1 right-2">
-                    <ArrowRight className="w-4 h-4 text-indigo-400" />
+                    <ArrowRight className="w-4 h-4 text-slate-500" />
                   </div>
-                  <span className="text-[10px] font-semibold text-indigo-400 uppercase block">Simulated Outcome</span>
+                  <span className="text-[10px] font-semibold text-slate-500 uppercase block">Simulated Outcome</span>
                   <div className="flex items-center justify-center gap-1.5">
                     <span
                       className={`w-2.5 h-2.5 rounded-full ${
@@ -198,10 +204,10 @@ export default function WhatIfSimulator({
                     />
                     <span className="text-xs uppercase font-bold text-gray-800">{result.simulatedVerdict}</span>
                   </div>
-                  <div className="text-lg font-display font-bold text-indigo-600 mt-2 font-mono">
+                  <div className="text-lg font-display font-bold text-slate-900 mt-2 font-mono">
                     {result.simulatedScore}%
                   </div>
-                  <span className="text-[10px] text-indigo-400">Compliance Score</span>
+                  <span className="text-[10px] text-slate-500">Compliance Score</span>
                 </div>
               </div>
 

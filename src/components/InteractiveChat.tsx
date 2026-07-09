@@ -53,9 +53,15 @@ export default function InteractiveChat({
     setIsLoading(true);
 
     try {
+      const customKey = localStorage.getItem("gemini_api_key");
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (customKey && customKey.trim() !== "") {
+        headers["x-gemini-api-key"] = customKey.trim();
+      }
+
       const response = await fetch("/api/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({
           message: input,
           history: messages.map((m) => ({ role: m.role, content: m.content })),
@@ -108,7 +114,7 @@ export default function InteractiveChat({
       <div className="border-b border-slate-100 pb-3.5 mb-4 shrink-0 flex items-center justify-between">
         <div>
           <h4 className="font-display text-sm font-bold text-slate-800 flex items-center gap-1.5">
-            <MessageSquare className="w-4.5 h-4.5 text-indigo-600" /> Interactive Legal Companion
+            <MessageSquare className="w-4.5 h-4.5 text-slate-800" /> Interactive Legal Companion
           </h4>
           <p className="text-[11px] text-slate-400 mt-1">
             Discuss your constitutional protections and dispute parameters in real-time.
@@ -131,8 +137,8 @@ export default function InteractiveChat({
                   onClick={() => toggleDocLink(doc.id)}
                   className={`px-3 py-1.5 border rounded-lg text-[11px] font-semibold transition-all cursor-pointer ${
                     linked
-                      ? "bg-indigo-600 text-white border-indigo-600 shadow-2xs"
-                      : "bg-white text-slate-600 border-slate-200 hover:border-indigo-400"
+                      ? "bg-slate-900 text-white border-slate-900 shadow-2xs"
+                      : "bg-white text-slate-600 border-slate-200 hover:border-slate-400"
                   }`}
                   id={`link_doc_btn_${doc.id}`}
                 >
@@ -154,7 +160,7 @@ export default function InteractiveChat({
           >
             <div
               className={`p-1.5 rounded-xl shrink-0 ${
-                m.role === "user" ? "bg-slate-900 text-white" : "bg-indigo-50 text-indigo-600"
+                m.role === "user" ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-800"
               }`}
             >
               {m.role === "user" ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
@@ -176,13 +182,13 @@ export default function InteractiveChat({
 
         {isLoading && (
           <div className="flex items-start gap-3 max-w-[85%] mr-auto" id="msg_typing_indicator">
-            <div className="p-1.5 rounded-xl bg-indigo-50 text-indigo-600 shrink-0">
+            <div className="p-1.5 rounded-xl bg-slate-100 text-slate-800 shrink-0">
               <Bot className="w-4 h-4" />
             </div>
             <div className="p-3.5 bg-slate-50 border border-slate-100 rounded-2xl flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-indigo-600 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-              <span className="w-1.5 h-1.5 bg-indigo-600 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-              <span className="w-1.5 h-1.5 bg-indigo-600 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+              <span className="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+              <span className="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+              <span className="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
             </div>
           </div>
         )}
@@ -197,13 +203,13 @@ export default function InteractiveChat({
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask a question (e.g. 'What is Article 21?', 'Is a 10 month deposit illegal?')"
           disabled={isLoading}
-          className="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-xs focus:outline-hidden focus:ring-2 focus:ring-indigo-500 font-sans disabled:opacity-50 text-slate-800"
+          className="flex-1 px-4 py-2.5 border border-slate-200 rounded-xl text-xs focus:outline-hidden focus:ring-2 focus:ring-slate-500 font-sans disabled:opacity-50 text-slate-800"
           id="chat_input_text"
         />
         <button
           type="submit"
           disabled={isLoading || !input.trim()}
-          className="p-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 disabled:opacity-50 shrink-0 cursor-pointer shadow-xs transition-all"
+          className="p-2.5 bg-slate-900 text-white rounded-xl hover:bg-slate-800 disabled:opacity-50 shrink-0 cursor-pointer shadow-xs transition-all"
           id="chat_submit_btn"
         >
           <Send className="w-4 h-4" />

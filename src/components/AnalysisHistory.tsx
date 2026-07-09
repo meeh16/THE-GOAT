@@ -26,7 +26,7 @@ export default function AnalysisHistory({
     <div className="bg-white border border-slate-200 rounded-[2rem] p-6 space-y-4 shadow-sm hover:shadow-md transition-all duration-300" id="history_container">
       <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
         <h4 className="font-display text-sm font-bold text-slate-800 flex items-center gap-1.5">
-          <History className="w-4.5 h-4.5 text-indigo-600" /> Evaluation Archives
+          <History className="w-4.5 h-4.5 text-slate-800" /> Evaluation Archives
         </h4>
         <span className="text-xs font-mono bg-slate-50 text-slate-500 px-2 py-0.5 rounded-full font-bold">
           {analyses.length}
@@ -51,7 +51,7 @@ export default function AnalysisHistory({
                 onClick={() => onSelectAnalysis(analysis)}
                 className={`p-3.5 border rounded-xl cursor-pointer transition-all ${
                   isSelected
-                    ? "border-indigo-600 bg-indigo-50/20 shadow-xs"
+                    ? "border-slate-800 bg-slate-100/50 shadow-xs"
                     : "border-slate-100 hover:border-slate-200"
                 }`}
                 id={`history_item_${analysis.id}`}
@@ -96,7 +96,7 @@ export default function AnalysisHistory({
                     </span>
                   )}
 
-                  <span className="text-indigo-600 hover:underline flex items-center gap-0.5 font-bold">
+                  <span className="text-slate-800 hover:underline flex items-center gap-0.5 font-bold">
                     View <ArrowRight className="w-3 h-3" />
                   </span>
                 </div>

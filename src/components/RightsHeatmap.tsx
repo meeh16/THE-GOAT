@@ -22,7 +22,7 @@ export default function RightsHeatmap({ rights }: RightsHeatmapProps) {
     <div className="space-y-4" id="rights_heatmap_container">
       <div>
         <h4 className="font-display text-sm font-bold text-gray-800 flex items-center gap-1.5">
-          <Shield className="w-4.5 h-4.5 text-indigo-600" /> Constitutional & Statutory Rights Heatmap
+          <Shield className="w-4.5 h-4.5 text-slate-800" /> Constitutional & Statutory Rights Heatmap
         </h4>
         <p className="text-[11px] text-gray-400 mt-0.5">
           Dynamic map highlighting which citizen rights are secure, threatened, or actively violated under Indian Constitutional and civil jurisprudence.

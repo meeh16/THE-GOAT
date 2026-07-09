@@ -32,7 +32,7 @@ export default function ExplainabilityTree({ nodes }: ExplainabilityTreeProps) {
       <div className="flex items-center justify-between border-b border-gray-100 pb-3">
         <div>
           <h4 className="font-display text-sm font-bold text-gray-800 flex items-center gap-1.5">
-            <Scale className="w-4.5 h-4.5 text-indigo-600" /> Explainability Tree (Audit Trail)
+            <Scale className="w-4.5 h-4.5 text-slate-800" /> Explainability Tree (Audit Trail)
           </h4>
           <p className="text-[11px] text-gray-400 mt-0.5">
             Step-by-step evaluation timeline and procedural verification steps computed by Sahur AI.
@@ -66,7 +66,7 @@ export default function ExplainabilityTree({ nodes }: ExplainabilityTreeProps) {
                     hasDetails ? "cursor-pointer" : ""
                   } ${
                     isExpanded
-                      ? "bg-indigo-50/5 border-indigo-200 shadow-xs"
+                      ? "bg-slate-50 border-slate-300 shadow-xs"
                       : "bg-white border-gray-100 hover:border-gray-200"
                   }`}
                 >

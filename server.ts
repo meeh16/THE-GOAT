@@ -21,20 +21,18 @@ const ai = new GoogleGenAI({
 });
 
 // Helper function to call generateContent with automatic retry and model fallback
-async function generateContentWithFallback(params: any, retries = 2, delayMs = 1000) {
-  let requestedModel = params.model || "gemini-2.5-flash";
+async function generateContentWithFallback(params: any, customApiKey?: string, retries = 2, delayMs = 1000) {
+  let requestedModel = params.model || "gemini-3.5-flash";
   
-  // If requesting gemini-3.5-flash, shift it to gemini-2.5-flash to avoid daily limits on experimental models
-  if (requestedModel === "gemini-3.5-flash") {
-    requestedModel = "gemini-2.5-flash";
+  if (requestedModel === "gemini-2.5-flash" || requestedModel === "gemini-1.5-flash") {
+    requestedModel = "gemini-3.5-flash";
   }
 
   const modelsToTry = [
     requestedModel,
-    "gemini-2.5-flash",
-    "gemini-1.5-flash",
-    "gemini-2.5-pro",
     "gemini-3.5-flash",
+    "gemini-flash-latest",
+    "gemini-3.1-flash-lite",
   ];
 
   // Deduplicate models to try
@@ -42,11 +40,25 @@ async function generateContentWithFallback(params: any, retries = 2, delayMs = 1
 
   let lastError: any = null;
 
+  // Use the custom key if provided, otherwise fall back to global client
+  const parsedApiKey = (customApiKey && customApiKey.trim() !== "" && customApiKey !== "null" && customApiKey !== "undefined") ? customApiKey.trim() : undefined;
+  
+  const client = parsedApiKey 
+    ? new GoogleGenAI({
+        apiKey: parsedApiKey,
+        httpOptions: {
+          headers: {
+            "User-Agent": "aistudio-build",
+          },
+        },
+      })
+    : ai;
+
   for (const model of uniqueModels) {
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
-        console.log(`[Sahur AI] Calling ${model} (Attempt ${attempt}/${retries})...`);
-        const response = await ai.models.generateContent({
+        console.log(`[Sahur AI] Calling ${model} (Attempt ${attempt}/${retries}) ${parsedApiKey ? 'with custom API key' : 'with default API key'}...`);
+        const response = await client.models.generateContent({
           ...params,
           model,
         });
@@ -182,6 +194,7 @@ app.get("/api/vault", (req, res) => {
 app.post("/api/vault/upload", async (req, res) => {
   try {
     const { name, type, content, size } = req.body;
+    const customApiKey = req.headers["x-gemini-api-key"] as string | undefined;
 
     if (!name || !content) {
       return res.status(400).json({ error: "Missing required fields: name, content" });
@@ -216,7 +229,7 @@ Analyze these clauses and map them against relevant Indian law:
 4. Set an overallVerdict: "good_to_go" (no illegal clauses), "review_needed" (unfair or suspicious clauses found), or "critical_issues" (unlawful clauses violating mandatory legal standards).`;
 
     const response = await generateContentWithFallback({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.5-flash",
       contents: extractionPrompt,
       config: {
         systemInstruction: systemPrompt,
@@ -244,7 +257,7 @@ Analyze these clauses and map them against relevant Indian law:
           },
         },
       },
-    });
+    }, customApiKey);
 
     const extractionResult = JSON.parse(response.text?.trim() || "{}");
 
@@ -285,6 +298,7 @@ app.delete("/api/vault/:id", (req, res) => {
 app.post("/api/analyze", async (req, res) => {
   try {
     const { scenario, vaultDocIds = [], clarifyingAnswers = [], domain: selectedDomain } = req.body;
+    const customApiKey = req.headers["x-gemini-api-key"] as string | undefined;
 
     if (!scenario || scenario.trim().length < 5) {
       return res.status(400).json({ error: "Please provide a valid scenario description." });
@@ -333,6 +347,13 @@ You handle 4 major domains:
 4. Consumer Rights: Defective goods, refund obligations, deceptive services, and unfair commercial practices under CoPRA 2019.
 
 Your core value is EXPLICIT GROUNDING. Avoid vague summaries or mock sections. Reference actual Indian laws, guidelines (e.g. D.K. Basu, Supreme Court rules), and articles of the Constitution of India.
+
+CRITICAL INSTRUCTION FOR TONE AND ANTI-SLOP:
+- STRICTLY ELIMINATE ALL CONVERSATIONAL FLUFF AND AI SLOP.
+- Do NOT use introductory filler such as "Sure, I can help you with that", "Based on my analysis", "Here is your output", or similar conversational lead-ins in any string field.
+- Do NOT use concluding summaries or conversational sign-offs in your outputs.
+- Force a direct, statutory-grounded, citizen-actionable legal tone.
+- Ensure retrieved codes are integrated with precise articles/sections of the Constitution of India and relevant statutory acts. Every legal assessment, explanation, or summary must begin immediately and directly with the statutory analysis.
 
 Handling Low Information:
 If the user scenario lacks sufficient detail to produce a highly confident verdict (e.g., they just say "landlord kicked me out" without mentioning written agreements, notices, or reasons), you must:
@@ -396,7 +417,7 @@ Evaluate this and respond in JSON with:
     - "stepByStepGrievance": Array of 3-4 specific sequential steps the citizen should take to submit a grievance.`;
 
     const response = await generateContentWithFallback({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.5-flash",
       contents: analysisPrompt,
       config: {
         systemInstruction: systemPrompt,
@@ -463,7 +484,7 @@ Evaluate this and respond in JSON with:
           },
         },
       },
-    });
+    }, customApiKey);
 
     const analysisResult = JSON.parse(response.text?.trim() || "{}");
 
@@ -510,6 +531,7 @@ app.delete("/api/analyses/:id", (req, res) => {
 app.post("/api/simulate", async (req, res) => {
   try {
     const { scenario, alteredFacts, vaultDocIds = [] } = req.body;
+    const customApiKey = req.headers["x-gemini-api-key"] as string | undefined;
 
     if (!scenario || !alteredFacts) {
       return res.status(400).json({ error: "Missing required fields: scenario, alteredFacts" });
@@ -536,7 +558,7 @@ Perform a comparative analysis of how these altered facts shift the compliance s
 4. How do the applicable constitutional rights or laws shift? Provide a summary of the difference.`;
 
     const response = await generateContentWithFallback({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.5-flash",
       contents: simulationPrompt,
       config: {
         systemInstruction: systemPrompt,
@@ -555,7 +577,7 @@ Perform a comparative analysis of how these altered facts shift the compliance s
           },
         },
       },
-    });
+    }, customApiKey);
 
     const simulationResult = JSON.parse(response.text?.trim() || "{}");
     res.json(simulationResult);
@@ -569,6 +591,7 @@ Perform a comparative analysis of how these altered facts shift the compliance s
 app.post("/api/chat", async (req, res) => {
   try {
     const { message, history = [], scenario, vaultDocIds = [] } = req.body;
+    const customApiKey = req.headers["x-gemini-api-key"] as string | undefined;
 
     if (!message) {
       return res.status(400).json({ error: "Missing prompt message" });
@@ -594,6 +617,8 @@ Strict Guidelines:
 3. Be clear, empathetic, and speak in plain, accessible language. Avoid dense legalese.
 4. If a scenario is linked, keep that context in mind.
 5. Remind the user you provide legal educational guidance, not certified legal advocacy or official attorney representation.
+6. ELIMINATE ALL CONVERSATIONAL FLUFF AND AI SLOP. Do NOT use introductory filler like "Certainly, I can help you with that", "Based on my analysis", or concluding chat-filler like "I hope this helps! Feel free to ask if you have more questions".
+7. State statutory facts, protections, and citizen-actionable procedural steps directly. Start responding to the user's inquiry immediately with legal and constitutional facts. Ensure precise articles/sections of the Constitution of India and other Indian statutory acts are cited.
 
 Linked Scenario: ${scenario || "None linked yet."}
 Linked Vault Documents Summary: ${vaultContext || "None linked."}`;
@@ -611,12 +636,12 @@ Citizen's New Message: ${message}
 Please provide a helpful, legal-grounded reply. Let's make it friendly and highly readable, using bullet points for instructions!`;
 
     const response = await generateContentWithFallback({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.5-flash",
       contents: promptWithHistory,
       config: {
         systemInstruction: chatContext,
       },
-    });
+    }, customApiKey);
 
     res.json({ reply: response.text });
   } catch (error: any) {

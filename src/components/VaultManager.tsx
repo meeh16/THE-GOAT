@@ -65,9 +65,15 @@ export default function VaultManager({
   const handleUploadAPI = async (name: string, type: string, content: string, size: number) => {
     setIsLoading(true);
     try {
+      const customKey = localStorage.getItem("gemini_api_key");
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (customKey && customKey.trim() !== "") {
+        headers["x-gemini-api-key"] = customKey.trim();
+      }
+
       const response = await fetch("/api/vault/upload", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ name, type, content, size }),
       });
       const data = await response.json();
@@ -141,7 +147,16 @@ export default function VaultManager({
     e.stopPropagation();
     if (!confirm("Are you sure you want to delete this document from your vault?")) return;
     try {
-      const res = await fetch(`/api/vault/${id}`, { method: "DELETE" });
+      const customKey = localStorage.getItem("gemini_api_key");
+      const headers: Record<string, string> = {};
+      if (customKey && customKey.trim() !== "") {
+        headers["x-gemini-api-key"] = customKey.trim();
+      }
+
+      const res = await fetch(`/api/vault/${id}`, {
+        method: "DELETE",
+        headers
+      });
       if (res.ok) {
         onDeleteSuccess(id);
         if (selectedDoc?.id === id) {
@@ -166,7 +181,7 @@ export default function VaultManager({
 
             <div
               className={`border-2 border-dashed rounded-xl p-8 text-center transition-all ${
-                isDragging ? "border-indigo-500 bg-indigo-50/50" : "border-gray-200 hover:border-gray-300"
+                isDragging ? "border-slate-800 bg-slate-50" : "border-gray-200 hover:border-gray-300"
               }`}
               onDragOver={onDragOver}
               onDragLeave={onDragLeave}
@@ -194,7 +209,7 @@ export default function VaultManager({
                   e.stopPropagation();
                   setShowManualInput(!showManualInput);
                 }}
-                className="text-indigo-600 font-semibold hover:underline flex items-center gap-1"
+                className="text-slate-800 font-bold hover:underline flex items-center gap-1"
                 id="btn_manual_input"
               >
                 <FilePlus className="w-3.5 h-3.5" /> Or copy-paste contract text
@@ -212,7 +227,7 @@ export default function VaultManager({
                     placeholder="e.g. MyRentalAgreement"
                     value={customName}
                     onChange={(e) => setCustomName(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-slate-500"
                   />
                 </div>
                 <div>
@@ -223,7 +238,7 @@ export default function VaultManager({
                     placeholder="Paste the lease terms or clauses here..."
                     value={customText}
                     onChange={(e) => setCustomText(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-indigo-500 font-mono"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-slate-500 font-mono"
                   />
                 </div>
                 <div className="flex justify-end gap-2">
@@ -236,7 +251,7 @@ export default function VaultManager({
                   </button>
                   <button
                     type="submit"
-                    className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-semibold hover:bg-indigo-700"
+                    className="px-3 py-1.5 bg-slate-900 text-white rounded-lg text-xs font-semibold hover:bg-slate-800"
                   >
                     Extract Clauses
                   </button>
@@ -262,7 +277,7 @@ export default function VaultManager({
                   key={idx}
                   disabled={isLoading}
                   onClick={() => handlePresetSelect(preset)}
-                  className="w-full text-left p-3 bg-white border border-slate-200 rounded-xl hover:border-indigo-400 hover:shadow-xs transition-all disabled:opacity-50"
+                  className="w-full text-left p-3 bg-white border border-slate-200 rounded-xl hover:border-slate-400 hover:bg-slate-50 hover:shadow-xs transition-all disabled:opacity-50"
                   id={`preset_${idx}`}
                 >
                   <div className="flex justify-between items-start mb-1">
@@ -287,7 +302,7 @@ export default function VaultManager({
         <div className="lg:col-span-1 bg-white border border-slate-200 rounded-[2rem] p-6 space-y-4 shadow-sm hover:shadow-md transition-all duration-300">
           <h4 className="font-display text-sm font-bold text-slate-800 flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
             <span>My Secure Legal Vault</span>
-            <span className="text-xs font-mono bg-indigo-50 text-indigo-600 px-2.5 py-0.5 rounded-full font-bold">
+            <span className="text-xs font-mono bg-slate-100 text-slate-800 px-2.5 py-0.5 rounded-full font-bold">
               {documents.length}
             </span>
           </h4>
@@ -310,7 +325,7 @@ export default function VaultManager({
                     onClick={() => setSelectedDoc(doc)}
                     className={`p-3.5 border rounded-xl cursor-pointer transition-all ${
                       selectedDoc?.id === doc.id
-                        ? "border-indigo-600 bg-indigo-50/20"
+                        ? "border-slate-800 bg-slate-100/50"
                         : "border-gray-100 hover:border-gray-200"
                     }`}
                     id={`vault_doc_${doc.id}`}
