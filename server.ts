@@ -82,8 +82,20 @@ async function generateContentWithFallback(params: any, customApiKey?: string, r
                             errMsg.includes("high demand") || 
                             errMsg.includes("429") || 
                             errMsg.includes("RESOURCE_EXHAUSTED");
+        const isAuthError = errMsg.includes("API_KEY_INVALID") || 
+                            errMsg.includes("API key not valid") || 
+                            errMsg.includes("403") || 
+                            errMsg.includes("Forbidden") ||
+                            errMsg.includes("invalid key") ||
+                            err?.status === 403 ||
+                            err?.status === 401;
 
         console.warn(`[Sahur AI] Failed with model ${model} on attempt ${attempt}: ${errMsg}`);
+
+        if (isAuthError) {
+          console.error(`[Sahur AI] Authentication error detected, aborting immediately: ${errMsg}`);
+          throw err;
+        }
 
         if (isTransient && attempt < retries) {
           console.log(`[Sahur AI] Retrying in ${delayMs * attempt}ms...`);
@@ -122,6 +134,9 @@ const DEFAULT_DB = {
 // Database persistence helper
 function readDB() {
   try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
     if (fs.existsSync(DB_FILE)) {
       const data = fs.readFileSync(DB_FILE, "utf-8");
       return JSON.parse(data);
@@ -134,6 +149,9 @@ function readDB() {
 
 function writeDB(data: typeof DEFAULT_DB) {
   try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
     fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf-8");
   } catch (error) {
     console.error("Error writing to database file:", error);
