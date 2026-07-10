@@ -136,10 +136,6 @@ const DATA_DIR = process.env.VERCEL ? "/tmp/server_data" : path.join(process.cwd
 const DB_FILE = path.join(DATA_DIR, "db.json");
 const KB_FILE = path.join(process.cwd(), "server", "legal_kb.json");
 
-// Ensure directories exist
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
 
 // Default state of the database
 const DEFAULT_DB = {
