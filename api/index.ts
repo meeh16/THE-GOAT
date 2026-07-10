@@ -11,7 +11,7 @@
  * 5. Set it in your environment variables as `GEMINI_API_KEY` (e.g., in `.env.local`), 
  *    or enter it directly in the frontend "Custom API Key" settings modal.
  */
-import app from "../server";
+import app from "../server.ts";
 
 export default app;
 
