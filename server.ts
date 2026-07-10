@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-import { createServer as createViteServer } from "vite";
 import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
 
@@ -104,7 +103,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 // Paths
-const DATA_DIR = path.join(process.cwd(), "server_data");
+const DATA_DIR = process.env.VERCEL ? "/tmp/server_data" : path.join(process.cwd(), "server_data");
 const DB_FILE = path.join(DATA_DIR, "db.json");
 const KB_FILE = path.join(process.cwd(), "server", "legal_kb.json");
 
@@ -665,6 +664,7 @@ Please provide a helpful, legal-grounded reply. Let's make it friendly and highl
 async function startServer() {
   // Vite integration in development mode
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
@@ -683,4 +683,8 @@ async function startServer() {
   });
 }
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}
+
+export default app;

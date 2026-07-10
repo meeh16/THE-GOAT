@@ -1,0 +1,108 @@
+{
+  "vault": [],
+  "saved_analyses": [
+    {
+      "id": "analysis_1783654158469",
+      "createdAt": "2026-07-10T03:29:18.469Z",
+      "scenario": "My company laid me off immediately on a Friday afternoon with zero notice and no severance pay. I have worked there as a continuous software developer for over 18 months. They claimed the company is downsizing, but they refuse to pay my pending salary or any retrenchment compensation.",
+      "vaultDocIds": [],
+      "clarifyingAnswers": [],
+      "result": {
+        "domain": "workplace",
+        "confidence": 95,
+        "missing_info": [
+          "Were you employed in a managerial, administrative, or supervisory capacity with a salary exceeding the statutory limit, or was your role primarily technical/executive?",
+          "Do you have a written employment contract stating specific notice periods or termination terms?",
+          "What was your exact monthly gross salary structure?"
+        ],
+        "verdict": "violation",
+        "score": 15,
+        "summary": "The immediate termination of a software developer with over 18 months of continuous service without one month's written notice, notice pay, or statutory retrenchment compensation, alongside the withholding of earned salary, constitutes a direct violation of the Industrial Disputes Act, 1947.",
+        "rights_heatmap": [
+          {
+            "rightName": "Right to Livelihood",
+            "status": "violated",
+            "description": "Arbitrary termination without statutory dues directly impacts the right to earn a livelihood, which is protected as an integral part of the right to life.",
+            "constitutionalRef": "Article 21"
+          },
+          {
+            "rightName": "Right against Arbitrary Retrenchment",
+            "status": "violated",
+            "description": "Statutory safeguard ensuring that continuous service of more than one year cannot be terminated without fulfilling mandatory notice and compensation preconditions.",
+            "constitutionalRef": "Section 25-F of the Industrial Disputes Act, 1947"
+          },
+          {
+            "rightName": "Right to Earned Wages",
+            "status": "violated",
+            "description": "Withholding of completed contract wages for services rendered constitutes unlawful wage deduction and exploitation.",
+            "constitutionalRef": "Article 23"
+          }
+        ],
+        "explainability_tree": [
+          {
+            "label": "Continuous Service Verification",
+            "status": "pass",
+            "description": "The employee has completed 18 months of uninterrupted service, which exceeds the threshold requirement of 1 year (240 days) of continuous service.",
+            "legalBasis": "Section 25-B, Industrial Disputes Act, 1947"
+          },
+          {
+            "label": "Notice Period Compliance Check",
+            "status": "fail",
+            "description": "The employer terminated the service immediately on a Friday afternoon without giving one month's written notice stating reasons, or paying wages in lieu of such notice.",
+            "legalBasis": "Section 25-F(a), Industrial Disputes Act, 1947"
+          },
+          {
+            "label": "Retrenchment Compensation Check",
+            "status": "fail",
+            "description": "The employer refused to pay retrenchment compensation equivalent to 15 days' average pay for every completed year of continuous service or part thereof in excess of six months.",
+            "legalBasis": "Section 25-F(b), Industrial Disputes Act, 1947"
+          },
+          {
+            "label": "Pending Salary Clearance",
+            "status": "fail",
+            "description": "The employer flatly refused to disburse pending earned salary for completed work periods.",
+            "legalBasis": "Payment of Wages Act, 1936"
+          }
+        ],
+        "applicable_laws": [
+          {
+            "statute": "Industrial Disputes Act, 1947",
+            "section": "Section 25-F",
+            "text": "No workman employed in any industry who has been in continuous service for not less than one year shall be retrenched until: (a) the workman has been given one month's notice in writing indicating the reasons for retrenchment, or paid wages in lieu of notice; and (b) retrenchment compensation equivalent to fifteen days' average pay for every completed year of service is paid.",
+            "explanation": "Since the developer was employed continuously for 18 months, the company cannot retrench them due to downsizing without fulfilling these conditions precedent."
+          },
+          {
+            "statute": "Constitution of India",
+            "section": "Article 21",
+            "text": "No person shall be deprived of his life or personal liberty except according to procedure established by law.",
+            "explanation": "The Supreme Court of India has held that the right to life under Article 21 includes the right to livelihood. Arbitrary and illegal termination without following established legal procedures violates this constitutional guarantee."
+          },
+          {
+            "statute": "Payment of Wages Act, 1936",
+            "section": "Section 5",
+            "text": "Every person employed in any railway, administrative, or industrial establishment shall be paid their earned wages within the prescribed statutory period upon termination.",
+            "explanation": "The withholding of the developer's pending salary is an illegal deduction and non-payment of wages under the Act."
+          }
+        ],
+        "evidence_checklist": [
+          "Employment Contract or Offer Letter confirming date of joining and salary structure.",
+          "Pay slips for the last 18 months of continuous service.",
+          "Bank statements showcasing regular salary credits and the final month's missing credit.",
+          "Termination email, letter, or screenshot of the instant messaging layoff notice on Friday afternoon.",
+          "Written communications (emails/letters) sent to HR or Management demanding pending salary and statutory retrenchment compensation."
+        ],
+        "authority_recommendation": {
+          "name": "Office of the Deputy Labour Commissioner",
+          "description": "The local statutory administrative authority appointed under the Industrial Disputes Act to conciliate and resolve workplace, wage, and termination disputes between employers and employees.",
+          "stepByStepGrievance": [
+            "Draft and send a formal Demand Notice via Registered Post AD/Speed Post to the employer, demanding immediate payment of pending salary, one month's notice pay, and statutory retrenchment compensation within 15 days.",
+            "If the employer fails to comply, file a written statement of dispute (complaint) before the local Conciliation Officer/Deputy Labour Commissioner detailing the facts of continuous service, lack of notice, and unpaid dues.",
+            "Attend the conciliation joint-conferences summoned by the Labour Officer, where both you and the employer will be required to present arguments and evidence.",
+            "If conciliation fails, obtain the 'Failure of Conciliation' report and request the Commissioner to refer the dispute to the Labour Court or Industrial Tribunal for binding adjudication."
+          ]
+        }
+      }
+    }
+  ],
+  "chats": {}
+}

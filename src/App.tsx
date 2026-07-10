@@ -15,7 +15,8 @@ import {
   HelpCircle,
   FileSpreadsheet,
   X,
-  Download
+  Download,
+  ExternalLink
 } from "lucide-react";
 import { VaultDocument, SavedAnalysis, AnalysisResult } from "./types";
 import VaultManager from "./components/VaultManager";
@@ -410,6 +411,31 @@ This document does not constitute formal attorney representation or signed court
                   className="w-full px-4 py-3 text-sm border border-slate-200 rounded-xl focus:border-slate-500 focus:ring-slate-500 focus:outline-none font-mono text-slate-800"
                   id="api_key_input_field"
                 />
+              </div>
+
+              {/* Get API Key Mini-Doc */}
+              <div className="p-4 bg-indigo-50 border border-indigo-100 rounded-xl text-xs text-indigo-900 space-y-2">
+                <div className="flex items-center gap-1.5 font-bold text-indigo-950">
+                  <HelpCircle className="w-3.5 h-3.5 text-indigo-600" />
+                  <span>How to get a Gemini API Key?</span>
+                </div>
+                <ol className="list-decimal list-inside space-y-1 text-indigo-900/90 font-medium">
+                  <li>
+                    Go to{" "}
+                    <a
+                      href="https://aistudio.google.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline text-indigo-700 hover:text-indigo-800 font-semibold inline-flex items-center gap-0.5 hover:gap-1 transition-all cursor-pointer"
+                    >
+                      Google AI Studio
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                  <li>Sign in with your Google Account</li>
+                  <li>Click <span className="font-semibold text-indigo-950">"Get API key"</span> in the left sidebar</li>
+                  <li>Click <span className="font-semibold text-indigo-950">"Create API key"</span> & copy the generated key</li>
+                </ol>
               </div>
 
               <div className="p-4 bg-amber-50 border border-amber-100 rounded-xl text-xs text-amber-800 space-y-1.5">
