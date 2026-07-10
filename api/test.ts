@@ -1,10 +1,19 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
-  res.status(200).json({ 
-    status: "ok", 
-    VERCEL: process.env.VERCEL, 
-    NODE_ENV: process.env.NODE_ENV,
-    PORT: process.env.PORT 
-  });
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  try {
+    const appModule = await import("../server");
+    res.status(200).json({ 
+      status: "ok", 
+      message: "successfully imported server.ts dynamically!",
+      appExists: !!appModule.default
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      status: "error",
+      message: "failed to import server.ts dynamically",
+      error: error?.message || String(error),
+      stack: error?.stack
+    });
+  }
 }
