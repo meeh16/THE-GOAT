@@ -6,6 +6,23 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const DEBUG_LOG_FILE = "/tmp/vercel_debug.log";
+function logDebug(msg: string) {
+  try {
+    fs.appendFileSync(DEBUG_LOG_FILE, `[${new Date().toISOString()}] ${msg}\n`, "utf-8");
+  } catch (e) {}
+}
+
+logDebug("Server module loaded. VERCEL=" + process.env.VERCEL + ", NODE_ENV=" + process.env.NODE_ENV);
+
+process.on("uncaughtException", (err) => {
+  logDebug(`Uncaught Exception: ${err?.message || err}\nStack: ${err?.stack}`);
+});
+
+process.on("unhandledRejection", (reason) => {
+  logDebug(`Unhandled Rejection: ${reason}`);
+});
+
 const app = express();
 const PORT = 3000;
 
@@ -133,27 +150,37 @@ const DEFAULT_DB = {
 
 // Database persistence helper
 function readDB() {
+  logDebug("readDB() called");
   try {
     if (!fs.existsSync(DATA_DIR)) {
+      logDebug("readDB() - DATA_DIR does not exist, creating: " + DATA_DIR);
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
     if (fs.existsSync(DB_FILE)) {
+      logDebug("readDB() - DB_FILE exists, reading " + DB_FILE);
       const data = fs.readFileSync(DB_FILE, "utf-8");
       return JSON.parse(data);
+    } else {
+      logDebug("readDB() - DB_FILE does not exist");
     }
-  } catch (error) {
+  } catch (error: any) {
+    logDebug("readDB() Error: " + error.message + "\nStack: " + error.stack);
     console.error("Error reading database file, resetting to default:", error);
   }
   return JSON.parse(JSON.stringify(DEFAULT_DB));
 }
 
 function writeDB(data: typeof DEFAULT_DB) {
+  logDebug("writeDB() called");
   try {
     if (!fs.existsSync(DATA_DIR)) {
+      logDebug("writeDB() - DATA_DIR does not exist, creating: " + DATA_DIR);
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
+    logDebug("writeDB() - writing to " + DB_FILE);
     fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf-8");
-  } catch (error) {
+  } catch (error: any) {
+    logDebug("writeDB() Error: " + error.message + "\nStack: " + error.stack);
     console.error("Error writing to database file:", error);
   }
 }
@@ -212,8 +239,20 @@ function retrieveLegalDocuments(query: string, domain?: string, limit = 3) {
 
 // --- API ROUTES ---
 
+app.get("/api/debug-logs", (req, res) => {
+  try {
+    if (fs.existsSync(DEBUG_LOG_FILE)) {
+      return res.type("text/plain").send(fs.readFileSync(DEBUG_LOG_FILE, "utf-8"));
+    }
+    return res.type("text/plain").send("No logs found at " + DEBUG_LOG_FILE);
+  } catch (e: any) {
+    return res.status(500).type("text/plain").send("Error reading logs: " + e.message);
+  }
+});
+
 // 1. Legal Vault - Get Documents
 app.get("/api/vault", (req, res) => {
+  logDebug("GET /api/vault called");
   const db = readDB();
   res.json(db.vault);
 });
