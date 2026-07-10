@@ -1,18 +1,13 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
+import app from "../app-server";
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default function handler(req: VercelRequest, res: VercelResponse) {
   try {
-    // Dynamically import the wrapper which statically imports app-server
-    const appModule = await import("./app-server-wrapper");
-    res.status(200).json({ 
-      status: "ok", 
-      message: "successfully imported app-server-wrapper dynamically!",
-      appExists: !!appModule.default
-    });
+    app(req, res);
   } catch (error: any) {
     res.status(500).json({
       status: "error",
-      message: "failed to import app-server-wrapper dynamically",
+      message: "failed to execute app-server statically inside handler",
       error: error?.message || String(error),
       stack: error?.stack
     });

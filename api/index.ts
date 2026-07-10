@@ -13,5 +13,7 @@
  */
 import app from "../app-server";
 
-export default app;
+export default (req: any, res: any) => {
+  app(req, res);
+};
 
