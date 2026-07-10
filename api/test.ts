@@ -1,10 +1,11 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import app from "../app-server";
+import { GoogleGenAI, Type } from "@google/genai";
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
   res.status(200).json({ 
     status: "ok", 
-    message: "successfully imported app-server.ts statically!",
-    appExists: !!app
+    message: "successfully imported @google/genai!",
+    GoogleGenAIExists: !!GoogleGenAI,
+    TypeExists: !!Type
   });
 }
