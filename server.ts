@@ -10,15 +10,38 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-// Initialize GoogleGenAI SDK as per the guidelines
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-  httpOptions: {
-    headers: {
-      "User-Agent": "aistudio-build",
-    },
-  },
-});
+let defaultAi: GoogleGenAI | null = null;
+
+function getAiClient(customApiKey?: string) {
+  const parsedApiKey = (customApiKey && customApiKey.trim() !== "" && customApiKey !== "null" && customApiKey !== "undefined") ? customApiKey.trim() : undefined;
+  
+  if (parsedApiKey) {
+    return new GoogleGenAI({
+      apiKey: parsedApiKey,
+      httpOptions: {
+        headers: {
+          "User-Agent": "aistudio-build",
+        },
+      },
+    });
+  }
+
+  if (!defaultAi) {
+    const key = process.env.GEMINI_API_KEY;
+    if (!key) {
+      console.warn("[Sahur AI] WARNING: GEMINI_API_KEY is not defined in the environment. Server is starting but AI requests will require a user-provided custom API key in the frontend.");
+    }
+    defaultAi = new GoogleGenAI({
+      apiKey: key || "MISSING_GEMINI_API_KEY_FALLBACK",
+      httpOptions: {
+        headers: {
+          "User-Agent": "aistudio-build",
+        },
+      },
+    });
+  }
+  return defaultAi;
+}
 
 // Helper function to call generateContent with automatic retry and model fallback
 async function generateContentWithFallback(params: any, customApiKey?: string, retries = 2, delayMs = 1000) {
@@ -40,24 +63,12 @@ async function generateContentWithFallback(params: any, customApiKey?: string, r
 
   let lastError: any = null;
 
-  // Use the custom key if provided, otherwise fall back to global client
-  const parsedApiKey = (customApiKey && customApiKey.trim() !== "" && customApiKey !== "null" && customApiKey !== "undefined") ? customApiKey.trim() : undefined;
-  
-  const client = parsedApiKey 
-    ? new GoogleGenAI({
-        apiKey: parsedApiKey,
-        httpOptions: {
-          headers: {
-            "User-Agent": "aistudio-build",
-          },
-        },
-      })
-    : ai;
+  const client = getAiClient(customApiKey);
 
   for (const model of uniqueModels) {
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
-        console.log(`[Sahur AI] Calling ${model} (Attempt ${attempt}/${retries}) ${parsedApiKey ? 'with custom API key' : 'with default API key'}...`);
+        console.log(`[Sahur AI] Calling ${model} (Attempt ${attempt}/${retries}) ${customApiKey ? 'with custom API key' : 'with default API key'}...`);
         const response = await client.models.generateContent({
           ...params,
           model,
